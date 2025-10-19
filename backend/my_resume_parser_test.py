@@ -4,12 +4,13 @@ load_dotenv()
 from openai import OpenAI
 client = OpenAI()
 
-# (a) Upload the PDF
-# Newer file APIs accept general user files; purpose may appear as "user_data" in docs.
-pdf = client.files.create(
-    file=open("/var/home/leverhea/Downloads/Lucas_Everheart.pdf","rb"),
-    purpose="user_data"
-)
+import fitz
+
+doc = fitz.open("/var/home/leverhea/Downloads/Lucas_Everheart.pdf")
+text = ""
+for page in doc:
+    text += page.get_text()
+doc.close()
 
 # (b) Call Responses API with your schema + the PDF as input
 schema = {
@@ -70,20 +71,14 @@ schema = {
 
 
 resp = client.chat.completions.create(
-    model="gpt-4o",  # Use gpt-4o which supports file uploads
+    model="gpt-5-nano",  # Use gpt-4o which supports file uploads
     messages=[
         {
             "role": "user",
             "content": [
                 {
                     "type": "text",
-                    "text": f"Extract a structured resume JSON from the attached PDF. Use this schema: {schema}. Only return fields that fit the schema. Do not invent data. Return only valid JSON."
-                },
-                {
-                    "type": "file",
-                    "file": {
-                        "file_id": pdf.id
-                    }
+                    "text": f"Extract a structured resume JSON from the attached PDF. Use this schema: {schema}. Only return fields that fit the schema. Do not invent data. Return only valid JSON. \n \n {text}"
                 }
             ]
         }
