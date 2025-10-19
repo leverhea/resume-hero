@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, EmailStr
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Dict, Any
 from datetime import date
 from enum import Enum
 
@@ -100,5 +100,5 @@ class ResumeData(BaseModel):
 class ResumeUploadResponse(BaseModel):
     success: bool
     message: str
-    resume_data: Optional[ResumeData] = None
+    resume_data: Optional[Dict[str, Any]] = None  # PyResParser returns a dict
     error: Optional[str] = None

@@ -7,8 +7,8 @@ import uvicorn
 import os
 import tempfile
 import logging
-from resume_parser_v2 import SmartResumeParser
-from schemas import ResumeUploadResponse, ResumeData
+from llm_resume_parser import ResumeParser
+from schemas import ResumeUploadResponse
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -21,8 +21,8 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Initialize smart resume parser
-resume_parser = SmartResumeParser()
+# Initialize LLM-based resume parser
+resume_parser = None  # Will be initialized per request
 
 # Add CORS middleware to allow frontend requests
 app.add_middleware(
@@ -82,9 +82,10 @@ async def parse_resume(file: UploadFile = File(...)):
             temp_file_path = temp_file.name
         
         try:
-            # Parse the resume
+            # Parse the resume using LLM-based parser
             logger.info(f"Parsing resume: {file.filename}")
-            resume_data = resume_parser.parse_resume(temp_file_path, file.filename)
+            parser = ResumeParser(temp_file_path)
+            resume_data = parser.get_extracted_data()
             
             return ResumeUploadResponse(
                 success=True,
