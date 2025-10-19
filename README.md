@@ -1,6 +1,6 @@
-# Number Calculator
+# Resume Parser
 
-A simple web application that allows users to add two numbers. The frontend is built with HTML, CSS, and vanilla JavaScript, while the backend uses FastAPI (Python).
+A web application that parses resume PDFs and extracts structured data. The frontend is built with HTML, CSS, and vanilla JavaScript, while the backend uses FastAPI (Python) with PDF processing capabilities.
 
 ## Project Structure
 
@@ -12,19 +12,21 @@ resume-hero/
 │   └── script.js           # JavaScript functionality
 ├── backend/
 │   ├── main.py             # FastAPI application
+│   ├── schemas.py          # Pydantic data models
+│   ├── resume_parser.py    # PDF parsing logic
 │   └── requirements.txt    # Python dependencies
 └── README.md               # This file
 ```
 
 ## Features
 
-- Two numeric input fields (side by side)
-- Input validation (only accepts numbers)
-- Add button to perform calculation
-- Real-time input validation
-- Responsive design
-- Error handling
-- Clean, modern UI
+- **PDF Upload**: Drag and drop or click to upload resume PDFs
+- **Structured Data Extraction**: Extracts personal info, education, work experience, skills, projects, certifications, and more
+- **Real-time Processing**: Upload and parse resumes instantly
+- **Responsive Design**: Works on desktop and mobile devices
+- **Error Handling**: Comprehensive error handling and validation
+- **Modern UI**: Clean, professional interface with loading states
+- **File Validation**: Ensures only PDF files are accepted with size limits
 
 ## Prerequisites
 
@@ -103,27 +105,24 @@ Simply open the `frontend/index.html` file directly in your web browser.
 ### Manual Testing
 
 1. Open the frontend in your browser
-2. Enter two numbers in the input fields
-3. Click the "Add" button
-4. Verify that the result appears below the button in green, bold text
-5. Test with different number combinations:
-   - Positive numbers: 5 + 3 = 8
-   - Negative numbers: -5 + 3 = -2
-   - Decimal numbers: 3.5 + 2.1 = 5.6
-   - Zero: 0 + 5 = 5
+2. Upload a resume PDF file by:
+   - Dragging and dropping a PDF file onto the upload area, or
+   - Clicking "Choose File" and selecting a PDF
+3. Click "Parse Resume" to process the file
+4. View the extracted structured data in the results section
+5. Test with different resume formats and layouts
 
 ### API Testing
 
 You can test the backend API directly using curl:
 
 ```bash
-# Test the addition endpoint
-curl -X POST "http://localhost:8000/add" \
-     -H "Content-Type: application/json" \
-     -d '{"number1": 5, "number2": 3}'
+# Test the resume parsing endpoint
+curl -X POST "http://localhost:8000/parse-resume" \
+     -F "file=@/path/to/your/resume.pdf"
 
 # Expected response:
-# {"result": 8, "operation": "addition"}
+# {"success": true, "message": "Resume parsed successfully", "resume_data": {...}}
 ```
 
 ### Health Check

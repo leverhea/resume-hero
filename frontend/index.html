@@ -3,25 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Number Calculator</title>
+    <title>Resume Parser</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Number Calculator</h1>
-        <div class="calculator">
-            <div class="input-group">
-                <div class="input-field">
-                    <label for="number1">First Number:</label>
-                    <input type="number" id="number1" name="number1" placeholder="Enter first number" required>
-                </div>
-                <div class="input-field">
-                    <label for="number2">Second Number:</label>
-                    <input type="number" id="number2" name="number2" placeholder="Enter second number" required>
+        <h1>Resume Parser</h1>
+        <div class="upload-section">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-content">
+                    <div class="upload-icon">📄</div>
+                    <h3>Upload Resume PDF</h3>
+                    <p>Drag and drop your resume PDF here, or click to browse</p>
+                    <input type="file" id="fileInput" accept=".pdf" hidden>
+                    <button class="browse-button" onclick="document.getElementById('fileInput').click()">
+                        Choose File
+                    </button>
                 </div>
             </div>
-            <button id="addButton" class="add-button">Add</button>
-            <div id="result" class="result"></div>
+            <div class="file-info" id="fileInfo" style="display: none;">
+                <div class="file-details">
+                    <span class="file-name" id="fileName"></span>
+                    <span class="file-size" id="fileSize"></span>
+                </div>
+                <button class="parse-button" id="parseButton">Parse Resume</button>
+            </div>
+        </div>
+        
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Parsing resume...</p>
+        </div>
+        
+        <div class="result-section" id="resultSection" style="display: none;">
+            <h2>Parsed Resume Data</h2>
+            <div class="resume-data" id="resumeData"></div>
+        </div>
+        
+        <div class="error" id="error" style="display: none;">
+            <div class="error-content">
+                <span class="error-icon">⚠️</span>
+                <span class="error-message" id="errorMessage"></span>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
